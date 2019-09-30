@@ -13,64 +13,18 @@ ArticleKeyword.destroy_all
 Article.destroy_all
 Topic.destroy_all
 
-
 newsapi = News.new(Rails.application.credentials.news_api_key)
 
 array_of_articles = newsapi.get_everything(
-                                        sources: 'abc-news, al-jazeera-english, associated-press, bbc-news, cbs-news, cnn, fox-news, msnbc, the-hill, the-new-york-times, the-washington-post, the-telegraph, time, usa-today, the-wall-street-journal',
-                                        from: '2019-09-20',
-                                        to: '2019-09-30',
-                                        language: 'en',
-                                        pageSize: 100
-                                        )
-
-temp_obj_arr = []
-# temp_kw_arr = []
+                                            sources: 'abc-news, al-jazeera-english, associated-press, bbc-news, cbs-news, cnn, fox-news, msnbc, the-hill, the-new-york-times, the-washington-post, the-telegraph, time, usa-today, the-wall-street-journal',
+                                            from: '2019-09-20',
+                                            to: '2019-09-30',
+                                            language: 'en',
+                                            pageSize: 100
+                                            )
 
 array_of_articles.each do |article|
-    temp_obj_arr << Article.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
+    Article.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
 end
 
-
-temp_obj_arr.each do |article|
-    if article.content == nil
-        article.content = ""
-    end
-    if article.description == nil
-        article.description = ""
-    end
-    if article.title == nil
-        article.title = ""
-    end
-
-    temp_keywords = article.title.downcase.gsub(/[.,\/#!$%\^&\*;:{}=\-_`~()]/,"")
-    keywords_to_array = temp_keywords.split.uniq
-
-    keywords = keywords_to_array[0..-4]
-    
-    keywords.each do |word|
-        if Stopwords.is?(word)
-            keywords.delete_at(keywords.index(word))
-        else
-            word.pluralize(0)
-        end
-
-        art_key = ArticleKeyword.new(article: article)
-        
-        # temp_kw_arr << ak
-
-        if Topic.exists?(title: word)
-            art_key.topic_id = Topic.find_by(title: word).id
-        else
-            new_topic = Topic.create(title: word)
-            art_key.topic_id = new_topic.id
-        end
-        art_key.save
-
-    end
-    
-    article.keywords = keywords.join(" ")
-end
-
-
-# binding.pry
+Article.create_topics()
