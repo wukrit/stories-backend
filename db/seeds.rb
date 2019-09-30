@@ -9,7 +9,9 @@ require 'news-api'
 require 'pry'
 require 'stopwords'
 
+ArticleKeyword.destroy_all
 Article.destroy_all
+Topic.destroy_all
 
 
 newsapi = News.new(Rails.application.credentials.news_api_key)
@@ -23,9 +25,10 @@ array_of_articles = newsapi.get_everything(
                                         )
 
 temp_obj_arr = []
+# temp_kw_arr = []
 
 array_of_articles.each do |article|
-    temp_obj_arr << Article.new(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
+    temp_obj_arr << Article.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
 end
 
 
@@ -51,7 +54,23 @@ temp_obj_arr.each do |article|
         else
             word.pluralize(0)
         end
+
+        art_key = ArticleKeyword.new(article: article)
+        
+        # temp_kw_arr << ak
+
+        if Topic.exists?(title: word)
+            art_key.topic_id = Topic.find_by(title: word).id
+        else
+            new_topic = Topic.create(title: word)
+            art_key.topic_id = new_topic.id
+        end
+        art_key.save
+
     end
     
     article.keywords = keywords.join(" ")
 end
+
+
+# binding.pry

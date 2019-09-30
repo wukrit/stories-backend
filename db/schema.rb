@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_30_194408) do
+ActiveRecord::Schema.define(version: 2019_09_30_214354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "article_keywords", force: :cascade do |t|
+    t.bigint "topic_id", null: false
+    t.bigint "article_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id"], name: "index_article_keywords_on_article_id"
+    t.index ["topic_id"], name: "index_article_keywords_on_topic_id"
+  end
 
   create_table "articles", force: :cascade do |t|
     t.string "title"
@@ -26,8 +35,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_194408) do
     t.string "description"
     t.string "content"
     t.string "published_at"
-    t.bigint "topics_id"
-    t.index ["topics_id"], name: "index_articles_on_topics_id"
   end
 
   create_table "dislikes", force: :cascade do |t|
@@ -61,7 +68,8 @@ ActiveRecord::Schema.define(version: 2019_09_30_194408) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "articles", "topics", column: "topics_id"
+  add_foreign_key "article_keywords", "articles"
+  add_foreign_key "article_keywords", "topics"
   add_foreign_key "dislikes", "articles"
   add_foreign_key "dislikes", "users"
   add_foreign_key "likes", "articles"
