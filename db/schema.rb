@@ -21,10 +21,8 @@ ActiveRecord::Schema.define(version: 2019_09_30_160231) do
     t.string "author"
     t.string "url"
     t.string "keywords"
-    t.bigint "topic_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["topic_id"], name: "index_articles_on_topic_id"
   end
 
   create_table "dislikes", force: :cascade do |t|
@@ -59,7 +57,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_160231) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "articles", "topics"
   add_foreign_key "dislikes", "articles"
   add_foreign_key "dislikes", "users"
   add_foreign_key "likes", "articles"
