@@ -6,7 +6,6 @@ class CreateArticles < ActiveRecord::Migration[6.0]
       t.string :author
       t.string :url
       t.string :keywords
-      t.belongs_to :topic, null: false, foreign_key: true
 
       t.timestamps
     end

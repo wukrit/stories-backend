@@ -1,0 +1,2 @@
+class ArticleKeywordsController < ApplicationController
+end
