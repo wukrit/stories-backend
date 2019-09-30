@@ -6,6 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'news-api'
+require 'pry'
+require 'stopwords'
+
+Article.destroy_all
 
 
 newsapi = News.new(Rails.application.credentials.news_api_key)
@@ -18,6 +22,36 @@ array_of_articles = newsapi.get_everything(
                                         pageSize: 100
                                         )
 
+temp_obj_arr = []
+
 array_of_articles.each do |article|
-    Article.create(title: article.title, source: article.name, author: article.author, url: article.url, keywords: article.description)
+    temp_obj_arr << Article.new(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
+end
+
+
+temp_obj_arr.each do |article|
+    if article.content == nil
+        article.content = ""
+    end
+    if article.description == nil
+        article.description = ""
+    end
+    if article.title == nil
+        article.title = ""
+    end
+
+    temp_keywords = article.title.downcase.gsub(/[.,\/#!$%\^&\*;:{}=\-_`~()]/,"")
+    keywords_to_array = temp_keywords.split.uniq
+
+    keywords = keywords_to_array[0..-4]
+    
+    keywords.each do |word|
+        if Stopwords.is?(word)
+            keywords.delete_at(keywords.index(word))
+        else
+            word.pluralize(0)
+        end
+    end
+    
+    article.keywords = keywords.join(" ")
 end
