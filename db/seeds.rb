@@ -7,6 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'news-api'
 
+
+newsapi = News.new(Rails.application.credentials.news_api_key)
+
 array_of_articles = newsapi.get_everything(
                                         sources: 'abc-news, al-jazeera-english, associated-press, bbc-news, cbs-news, cnn, fox-news, msnbc, the-hill, the-new-york-times, the-washington-post, the-telegraph, time, usa-today, the-wall-street-journal',
                                         from: '2019-09-20',
@@ -14,4 +17,7 @@ array_of_articles = newsapi.get_everything(
                                         language: 'en',
                                         pageSize: 100
                                         )
-                                    
+
+array_of_articles.each do |article|
+    Article.create(title: article.title, source: article.name, author: article.author, url: article.url, keywords: article.description)
+end
