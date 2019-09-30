@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'news-api'
+
+newsapi = News.new("c21cdb52e7774d1b8587def65fb90b1c")
+
+array_of_articles = newsapi.get_everything(
+                                        sources: 'abc-news, al-jazeera-english, associated-press, bbc-news, cbs-news, cnn, fox-news, msnbc, the-hill, the-new-york-times, the-washington-post, the-telegraph, time, usa-today, the-wall-street-journal',
+                                        from: '2019-09-20',
+                                        to: '2019-09-30',
+                                        language: 'en',
+                                        pageSize: 100
+                                        )
+                                    
