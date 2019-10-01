@@ -27,3 +27,9 @@ array_of_articles.each do |article|
 end
 
 Article.create_topics()
+Topic.all.map do |topic|
+    topic.update(value: topic.articles.count)
+end
+Article.all.map do |article|
+    article.update(value: article.article_keywords.count)
+end
