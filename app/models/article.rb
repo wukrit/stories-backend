@@ -6,42 +6,18 @@ class Article < ApplicationRecord
   has_many :article_keywords, dependent: :destroy
   has_many :topics, through: :article_keywords
 
-  require 'stopwords'
-
-  def self.create_topics
-    self.all.each do |article|
-        article.init_check()
-
-        temp_keywords = article.title.downcase.gsub(/[.,\/#!$%\^&\*;:{}=\-_`~()]/,"")
-        keywords_to_array = temp_keywords.split.uniq
-
-        keywords = keywords_to_array[0..-4]
-        
-        keywords.each do |word|
-            if Stopwords.is?(word)
-                keywords.delete_at(keywords.index(word))
-            else
-                word.pluralize(0)
-                art_key = ArticleKeyword.new(article: article)
-                art_key.assign_topic(word)        
-                art_key.save()
-            end
+    def self.exist?(article)
+        if Article.find_by(url: article.url)
+            selected_article = Article.find_by(url: article.url)
+        else
+            selected_article = Article.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
         end
-        
-        article.keywords = keywords.join(" ")
+        selected_article
     end
-  end
 
-  def init_check
-    if self.content == nil
-        self.content = ""
+    def self.assign_topic(article, topic)
+        selected_article = Article.exist?(article)
+        ArticleKeyword.create(topic_id: topic.id, article_id: selected_article.id)
     end
-    if self.description == nil
-        self.description = ""
-    end
-    if self.title == nil
-        self.title = ""
-    end
-  end
 
 end
