@@ -6,6 +6,8 @@ class Article < ApplicationRecord
   has_many :article_keywords
   has_many :topics, through: :article_keywords
 
+  require 'stopwords'
+
   def self.create_topics
     self.all.each do |article|
         article.init_check()
