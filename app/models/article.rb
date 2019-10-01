@@ -3,7 +3,7 @@ class Article < ApplicationRecord
   has_many :users, through: :likes
   has_many :dislikes
   has_many :users, through: :dislikes
-  has_many :article_keywords
+  has_many :article_keywords, dependent: :destroy
   has_many :topics, through: :article_keywords
 
   require 'stopwords'
@@ -20,7 +20,6 @@ class Article < ApplicationRecord
         keywords.each do |word|
             if Stopwords.is?(word)
                 keywords.delete_at(keywords.index(word))
-                # binding.pry
             else
                 word.pluralize(0)
                 art_key = ArticleKeyword.new(article: article)
