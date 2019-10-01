@@ -20,13 +20,13 @@ class Article < ApplicationRecord
         keywords.each do |word|
             if Stopwords.is?(word)
                 keywords.delete_at(keywords.index(word))
+                # binding.pry
             else
                 word.pluralize(0)
+                art_key = ArticleKeyword.new(article: article)
+                art_key.assign_topic(word)        
+                art_key.save()
             end
-
-            art_key = ArticleKeyword.new(article: article)
-            art_key.assign_topic(word)        
-            art_key.save()
         end
         
         article.keywords = keywords.join(" ")
