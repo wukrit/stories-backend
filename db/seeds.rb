@@ -7,7 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'news-api'
 require 'pry'
-require 'stopwords'
 
 ArticleKeyword.destroy_all
 Article.destroy_all
