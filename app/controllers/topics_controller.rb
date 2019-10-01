@@ -1,7 +1,7 @@
 class TopicsController < ApplicationController
 
     def index
-        @topics = Topic.all
+        @topics = Topic.sort
         render json: @topics, inlcude: "**"
     end
 

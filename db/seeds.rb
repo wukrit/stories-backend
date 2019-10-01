@@ -33,3 +33,4 @@ end
 Article.all.map do |article|
     article.update(value: article.article_keywords.count)
 end
+Topic.purge
