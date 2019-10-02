@@ -8,6 +8,10 @@ class Topic < ApplicationRecord
         ["CNN", "The New York Times", "BBC News", "USA Today", "Time", "ABC News", "The Wall Street Journal", "Al Jazeera English", "The Washington Post", "Fox News", "The Telegraph", "MSNBC", "Associated Press", "CBS News", "The Hill"] 
     end
 
+    def self.names
+        Topic.all.pluck(:title)
+    end
+
     def sources
         arr = Article.all.select do |article|
             article.topics.include?(self)

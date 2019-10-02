@@ -7,17 +7,30 @@ class Article < ApplicationRecord
   has_many :topics, through: :article_keywords
 
     def self.exist?(article)
-        if Article.find_by(url: article.url)
-            selected_article = Article.find_by(url: article.url)
+        if self.find_by(url: article.url)
+            selected_article = self.find_by(url: article.url)
         else
-            selected_article = Article.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
+            selected_article = self.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
         end
         selected_article
     end
 
     def self.assign_topic(article, topic)
-        selected_article = Article.exist?(article)
+        selected_article = self.exist?(article)
         ArticleKeyword.create(topic_id: topic.id, article_id: selected_article.id)
+    end
+
+    def self.by_source(source)
+        new_arr = self.all.select do |article|
+            article.source === source
+        end
+        new_arr
+    end
+
+    def self.by_topic(topic)
+        self.all.select do |article|
+            article.topics.find_by(title: topic)
+        end
     end
 
 end
