@@ -10,7 +10,7 @@ class Article < ApplicationRecord
         if self.find_by(url: article.url)
             selected_article = self.find_by(url: article.url)
         else
-            selected_article = self.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
+            selected_article = self.create(title: article.title, source: article.name, author: article.author, url: article.url, img_url: article.urlToImage, description: article.description, content: article.content, published_at: article.publishedAt)
         end
         selected_article
     end
