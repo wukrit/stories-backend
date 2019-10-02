@@ -1,7 +1,7 @@
 class TopicsController < ApplicationController
 
     def index
-        @topics = Topic.sort
+        @topics = Topic.all
         render json: @topics, inlcude: "**"
     end
 
@@ -10,4 +10,28 @@ class TopicsController < ApplicationController
         render json: @topic, include: "**"
     end
 
+    def tree
+        @topics = Topic.names
+        @sources = Topic.sources
+
+        @topics.map! do |topic|
+            arts = Article.by_topic(topic)
+            srcs = @sources.map do |source|
+                {
+                    name: source,
+                    value: arts.select{ |art| art.source == source }.count
+                }
+            end
+            {
+                name: topic,
+                children: srcs
+            }
+        end
+
+        @tree = {
+            name: "Tree",
+            children: @topics
+        }
+        render json: @tree
+    end
 end

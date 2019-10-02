@@ -4,18 +4,19 @@ class Topic < ApplicationRecord
     has_many :article_keywords, dependent: :destroy
     has_many :articles, through: :article_keywords
     
-    def self.sort
-        self.all.sort_by do |topic|
-            topic.articles.count
-        end.reverse
+    def self.sources
+        ["CNN", "The New York Times", "BBC News", "USA Today", "Time", "ABC News", "The Wall Street Journal", "Al Jazeera English", "The Washington Post", "Fox News", "The Telegraph", "MSNBC", "Associated Press", "CBS News", "The Hill"] 
     end
 
+    def self.names
+        Topic.all.pluck(:title)
+    end
 
-    def self.purge
-        self.all.each do |topic|
-            if Stopwords.is?(topic.title)
-                topic.destroy
-            end
+    def sources
+        arr = Article.all.select do |article|
+            article.topics.include?(self)
         end
+        arr.pluck(:source).uniq
     end
+
 end

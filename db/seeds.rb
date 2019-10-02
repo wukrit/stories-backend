@@ -28,11 +28,6 @@ Topic.all.each do |topic|
         )
 
     fetch_arr.each do |article|
-        if Article.find_by(url: article.url)
-            selected_article = Article.find_by(url: article.url)
-        else
-            selected_article = Article.create(title: article.title, source: article.name, author: article.author, url: article.url, description: article.description, content: article.content, published_at: article.publishedAt)
-        end
-        ArticleKeyword.create(topic_id: topic.id, article_id: selected_article.id)
+        Article.assign_topic(article, topic)
     end
 end
