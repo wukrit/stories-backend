@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # resources :article_keywords
   resources :dislikes, only: [:show] 
   resources :likes, only: [:show]
-  resources :users
+  resources :users, only: [:index, :show, :create, :destroy]
   resources :articles, only: [:index, :show]
   resources :topics, only: [:index, :show]
 
