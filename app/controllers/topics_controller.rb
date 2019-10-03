@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
 
     def index
         @topics = Topic.all
-        render json: @topics, inlcude: "**"
+        render json: @topics, include: ["articles", "likes"]
     end
 
     def show
