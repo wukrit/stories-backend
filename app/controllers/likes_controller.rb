@@ -5,7 +5,7 @@ class LikesController < ApplicationController
     end
 
     def show
-        @like = like.find(params[:id])
+        @like = Like.find(params[:id])
         render json: @like
     end
 
