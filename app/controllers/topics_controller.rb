@@ -2,12 +2,12 @@ class TopicsController < ApplicationController
 
     def index
         @topics = Topic.all
-        render json: @topics, include: ["articles", "articles.likes", "article.dislikes"]
+        render json: @topics, include: ["articles", "articles.likes", "articles.dislikes"]
     end
 
     def show
         @topic = Topic.find(params[:id])
-        render json: @topic, include: ["articles", "articles.likes", "article.dislikes"]
+        render json: @topic, include: ["articles", "articles.likes", "articles.dislikes"]
     end
 
     def tree
