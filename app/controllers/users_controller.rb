@@ -12,7 +12,12 @@ class UsersController < ApplicationController
 
     def create
         @user = User.create(username: params[:username])
-        render json: @user
+        if @user.valid?
+            render json: @user
+        else
+            render json: {error: "That username already exists"}
+        end
+
     end
 
     def destroy
