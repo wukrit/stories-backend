@@ -12,7 +12,7 @@ ArticleKeyword.destroy_all
 Article.destroy_all
 Topic.destroy_all
 
-newsapi = News.new(news_api_key)
+newsapi = News.new(Rails.application.credentials.news_api_key)
 topics = ["Sports", "Election", "Trade", "White House", "International", "Business", "Entertainment", "Economics", "Protests", "Climate Change", "LGBTQ", "Technology", "Health"]
 
 topics.each do |topic|
