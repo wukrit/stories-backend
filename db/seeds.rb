@@ -12,7 +12,7 @@ ArticleKeyword.destroy_all
 Article.destroy_all
 Topic.destroy_all
 
-newsapi = News.new("a7d3bf96226e4fa68956628033f0c93d")
+newsapi = News.new(news_api_key)
 topics = ["Sports", "Election", "Trade", "White House", "International", "Business", "Entertainment", "Economics", "Protests", "Climate Change", "LGBTQ", "Technology", "Health", "Science", "Food", "Travel"]
 
 topics.each do |topic|
