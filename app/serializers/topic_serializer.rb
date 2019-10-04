@@ -4,6 +4,7 @@ class TopicSerializer < ActiveModel::Serializer
   has_many :articles
 
   def articles
+    Article.sort_by_date.reverse
     Article.limited
   end
 end

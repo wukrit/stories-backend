@@ -35,4 +35,10 @@ class Article < ApplicationRecord
         end
     end
 
+    def self.sort_by_date
+        self.all.sort_by do |article|
+            DateTime.parse(article.published_at)
+        end
+    end
+
 end
