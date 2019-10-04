@@ -25,6 +25,7 @@ Topic.all.each do |topic|
     fetch_arr = newsapi.get_everything(
         q: topic.title,
         sources: 'abc-news, al-jazeera-english, associated-press, bbc-news, cbs-news, cnn, fox-news, msnbc, the-hill, the-new-york-times, the-washington-post, the-telegraph, time, usa-today, the-wall-street-journal',
+        from: '2019-10-03'
         language: 'en',
         pageSize: 100
         )
