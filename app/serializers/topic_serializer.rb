@@ -1,8 +1,9 @@
 class TopicSerializer < ActiveModel::Serializer
   attributes :id, :title, :value
 
-  has_many :articles do 
-    :articles.limit(20)
-  end
+  has_many :articles
 
+  def articles
+    Article.limited
+  end
 end

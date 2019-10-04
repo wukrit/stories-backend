@@ -5,6 +5,8 @@ class Article < ApplicationRecord
   has_many :users, through: :dislikes
   has_many :article_keywords, dependent: :destroy
   has_many :topics, through: :article_keywords
+  scope :limited, lambda { limit(20) }
+
 
     def self.exist?(article)
         if self.find_by(url: article.url)
