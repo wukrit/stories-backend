@@ -8,6 +8,8 @@
 require 'news-api'
 require 'pry'
 
+Like.destroy_all
+Dislike.destroy_all
 ArticleKeyword.destroy_all
 Article.destroy_all
 Topic.destroy_all
